@@ -2408,7 +2408,7 @@ EditorUi.prototype.createUi = function () {
 
   // Creates toolbar
   //
-  this.toolbar = (this.editor.chromeless) ? null : this.createToolbar(this.createDiv('geToolbar'));
+ // this.toolbar = (this.editor.chromeless) ? null : this.createToolbar(this.createDiv('geToolbar')); Carol
 
   if (this.toolbar != null) {
     this.toolbarContainer.appendChild(this.toolbar.container);

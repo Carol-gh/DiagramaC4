@@ -4,7 +4,7 @@ window.addEventListener('load', () => {
   const {io, socket } = require('./core/watch.js');
   const EditorUi = require('./src/EditorUi.js');
   const params = (new URL(window.location)).searchParams;
-  const room = params.get('id_sala');
+  const room = params.get('room');
   const username = params.get('username'); 
   const RoomNotFound = 'Clave de la Sala';
   const UserNotFound = 'Codigo Unico del usuario';
@@ -35,7 +35,7 @@ EditorUi.prototype.init = function () {
   }
 
   this.actions.addAction('new...', function () {
-    var answer = window.confirm("Quieres crear el diagrama?");
+    var answer = window.confirm("Estas seguro en crear un nuevo diagrama?");
     if (answer) {
       EditorUi.prototype.editor.setGraphXml(window.parent.mxUtils.parseXml('<mxGraphModel dx="667" dy="662" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="826" pageHeight="1169" background="#ffffff"><root><mxCell id="0"/><mxCell id="1" parent="0"/></root></mxGraphModel>').documentElement);
     }
@@ -46,7 +46,7 @@ EditorUi.prototype.init = function () {
 
   this.actions.addAction('save', function () {
     //console.log('save action desde indexJS');
-    var answer = window.confirm('Quieres guardar el diagrama?');
+    var answer = window.confirm('Estas seguro en guardar el diagrama?');
     if (answer) {
       //console.log('emitir el evento guardar');
       socket.emit('save_component', { room });
@@ -118,14 +118,14 @@ mxUtils.getAll([bundle, STYLE_PATH + '/default.xml'], function (xhr) {
   var themes = new Object();
   themes[Graph.prototype.defaultThemeName] = xhr[1].getDocumentElement();
 
-  // Main 
- new EditorUi(new Editor(urlParams.chrome == '0', themes));
+  // Main
+  new EditorUi(new Editor(urlParams.chrome == '0', themes));
   //console.log(EditorUi.prototype.sidebarContainer);
-  var users = document.createElement('a');
+  //var users = document.createElement('a');
   users.className = 'geTitle';
   users.style = 'padding-left:7%'
-  users.innerText = 'En linea';
-  EditorUi.prototype.sidebarContainer.appendChild(users);
+  users.innerText = 'Usuarios Conectados';
+  //EditorUi.prototype.sidebarContainer.appendChild(users);
   
 }, function () {
   document.body.innerHTML = '<center style="margin-top:10%;">Error loading resource files. Please check browser console.</center>';
@@ -135,12 +135,11 @@ mxUtils.getAll([bundle, STYLE_PATH + '/default.xml'], function (xhr) {
 
 
 
-
 // socket client
 socket.on('connect', () => {
 
 
-  socket.on('draw_component', (data) => {
+   socket.on('draw_component', (data) => {
     //console.log('Listen to socketClient.drawComponent');
      const { xml: xmlString } = data;
      //console.log('xmlstring es ',xmlString);
@@ -150,14 +149,14 @@ socket.on('connect', () => {
      }
   });
 
-  socket.on('load_room_title', (data) => {
+ /* socket.on('load_room_title', (data) => {
         var title = document.createElement('a');
         title.className = 'geTitle';
         title.innerHTML = '<center style="margin-right:10%;"><strong>'+ data.title.trim().toUpperCase()+'</strong> </center>';
         EditorUi.prototype.sidebarContainer.insertBefore(title, EditorUi.prototype.sidebarContainer.firstChild);    
   });
-
-  socket.on('reload_users_room', (data) => {
+*/
+ /* socket.on('reload_users_room', (data) => {
      console.log('reload_users_room desde el socket cliente.')
        data.users.forEach( user => {
           let isDraw =  true;
@@ -183,16 +182,16 @@ socket.on('connect', () => {
 
      
      
-  }); 
+  }); */
 
   socket.on('error_server', () => {
 
-    EditorUi.prototype.footerContainer.innerHTML = '<strong>AVISO: Error al traer datos del Servidor. MODO SOLITARIO</strong>'; 
+    EditorUi.prototype.footerContainer.innerHTML =  '<strong>AVISO: Error al traer datos del Servidor. MODO SOLITARIO</strong>'; 
    
   });
 
 
-  socket.on('remove_user_room', (data) => {
+ socket.on('remove_user_room', (data) => {
         // redraw users connects
         //console.log('remove_user_room...');
         var children = EditorUi.prototype.sidebarContainer.children;
@@ -206,7 +205,7 @@ socket.on('connect', () => {
       
  
 
-  });  
+  }); 
 
   socket.on('save_response', (data) => {
 
