@@ -175,7 +175,7 @@ io.on('connection', (socket) => {
 });
 
 //process.env.PORT ||9090
-server.listen(8082);
+server.listen(8083);
 console.log('servidor socket conectado en el puerto 9090');
 module.exports = {
   sockets,
