@@ -40,7 +40,6 @@ EditorUi.prototype.init = function () {
       EditorUi.prototype.editor.setGraphXml(window.parent.mxUtils.parseXml('<mxGraphModel dx="667" dy="662" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="826" pageHeight="1169" background="#ffffff"><root><mxCell id="0"/><mxCell id="1" parent="0"/></root></mxGraphModel>').documentElement);
     }
     
-    
   });
 
 
@@ -149,14 +148,14 @@ socket.on('connect', () => {
      }
   });
 
- /* socket.on('load_room_title', (data) => {
+  /* socket.on('load_room_title', (data) => {
         var title = document.createElement('a');
         title.className = 'geTitle';
         title.innerHTML = '<center style="margin-right:10%;"><strong>'+ data.title.trim().toUpperCase()+'</strong> </center>';
         EditorUi.prototype.sidebarContainer.insertBefore(title, EditorUi.prototype.sidebarContainer.firstChild);    
   });
-*/
- /* socket.on('reload_users_room', (data) => {
+
+  socket.on('reload_users_room', (data) => {
      console.log('reload_users_room desde el socket cliente.')
        data.users.forEach( user => {
           let isDraw =  true;
@@ -182,8 +181,8 @@ socket.on('connect', () => {
 
      
      
-  }); */
-
+  }); 
+*/
   socket.on('error_server', () => {
 
     EditorUi.prototype.footerContainer.innerHTML =  '<strong>AVISO: Error al traer datos del Servidor. MODO SOLITARIO</strong>'; 

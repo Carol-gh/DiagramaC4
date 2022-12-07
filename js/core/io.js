@@ -75,12 +75,12 @@ io.on('connection', (socket) => {
       // consumir el endpoint para obtener el usuario por su token
       // le paso el token del usuario como parametro
       // TODO: CAMBIAR A LA URL DE MI API
-      const responseUser = await axios.get('https://pizarra-c4.herokuapp.com/api/user/'+name);
+      const responseUser = await axios.get('https://ec2-54-91-64-187.compute-1.amazonaws.com/api/user/'+name);
       console.log(responseUser.data);
       // consumir el endpoint para obtener la el proyecto por su codigo/llave
       // le paso el codigo de la sala
       // TODO: CAMBIAR A LA URL DE MI API
-      const responseProject = await axios.get('https://pizarra-c4.herokuapp.com/api/cargar-diagrama/'+room);
+      const responseProject = await axios.get('https://ec2-54-91-64-187.compute-1.amazonaws.com/api/cargar-diagrama/'+room);
       console.log(responseProject.data);
       if((responseUser.status === 200 && responseProject.status === 200) && responseUser.data.name && responseProject.data.title) {
 
@@ -131,7 +131,7 @@ io.on('connection', (socket) => {
           content : roomGraphXmls[data.room]
         }
         // TODO: CAMBIAR A LA URL DE MI API
-        const response =  await axios.put('https://pizarra-c4.herokuapp.com/api/guardar-diagrama/'+data.room, body);
+        const response =  await axios.put('https://ec2-54-91-64-187.compute-1.amazonaws.com/api/guardar-diagrama/'+data.room, body);
         console.log(response.data);
         /* let message = 'Ocurrio un error al guardar el diagrama.';
         if(response.status === 200) {
@@ -175,7 +175,7 @@ io.on('connection', (socket) => {
 });
 
 //process.env.PORT ||9090
-server.listen(9090);
+server.listen(8082);
 console.log('servidor socket conectado en el puerto 9090');
 module.exports = {
   sockets,
