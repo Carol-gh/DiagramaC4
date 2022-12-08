@@ -29,22 +29,41 @@ Actions.prototype.init = function () {
   this.addAction('new...', function () {
     window.open(ui.getUrl());
   });
-  // this.addAction('open...', function () {
-  //   window.openNew = true;
-  //   window.openKey = 'open';
-
-  //   window.editorUi = ui;
-
-  //   ui.openFile();
-  // });
-  this.addAction('import...', function () {
-    window.openNew =false;
+  this.addAction('open...', function () {
+    window.openNew = true;
     window.openKey = 'open';
 
-    //window.editorUi = ui;
+    window.editorUi = ui;
 
-     ui.openFile();
-  });
+    ui.openFile();
+   });
+  this.addAction('import...', function () {
+    window.openNew =false;
+    window.openKey = 'import';
+    window.openFile = new OpenFile(mxUtils.bind(this, function()
+		{
+			ui.hideDialog();
+		}));    
+    window.openFile.setConsumer(mxUtils.bind(this, function(xml, filename)
+		{
+			try
+			{
+				var doc = mxUtils.parseXml(xml);
+				editor.graph.setSelectionCells(editor.graph.importGraphModel(doc.documentElement));
+			}
+			catch (e)
+			{
+				mxUtils.alert(mxResources.get('invalidOrMissingFile') + ': ' + e.message);
+			}
+		}));
+
+		// Removes openFile if dialog is closed
+		ui.showDialog(new OpenDialog(this).container, 320, 220, true, true, function()
+		{
+			window.openFile = null;
+		});
+	}).isEnabled = isGraphEnabled;
+    
   this.addAction('save', function () {
     saveFile(ui, false);
   }, null, null, 'Ctrl+S').isEnabled = isGraphEnabled;
