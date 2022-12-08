@@ -41,7 +41,7 @@ Actions.prototype.init = function () {
     window.openNew =false;
     window.openKey = 'open';
 
-    window.editorUi = ui;
+    //window.editorUi = ui;
 
      ui.openFile();
   });
