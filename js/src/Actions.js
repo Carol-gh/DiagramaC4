@@ -38,7 +38,7 @@ Actions.prototype.init = function () {
   //   ui.openFile();
   // });
   this.addAction('import...', function () {
-    window.openNew = true;
+    window.openNew =false;
     window.openKey = 'open';
 
     window.editorUi = ui;
