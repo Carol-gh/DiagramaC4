@@ -38,33 +38,13 @@ Actions.prototype.init = function () {
   //   ui.openFile();
   // });
   this.addAction('import...', function () {
-    window.openNew = false;
-    window.openKey = 'import';
+    window.openNew = true;
+    window.openKey = 'open';
 
-    // Closes dialog after open
-    window.openFile = new OpenFile(mxUtils.bind(this, function () {
-      ui.hideDialog();
-    }));
+    window.editorUi = ui;
 
-    window.openFile.setConsumer(mxUtils.bind(this, function (xml, filename) {
-      try {
-        var doc = mxUtils.parseXml(xml);
-        var model = new mxGraphModel();
-        var codec = new mxCodec(doc);
-        codec.decode(doc.documentElement, model);
-
-        var children = model.getChildren(model.getChildAt(model.getRoot(), 0));
-        editor.graph.setSelectionCells(editor.graph.importCells(children));
-      } catch (e) {
-        mxUtils.alert(mxResources.get('invalidOrMissingFile') + ': ' + e.message);
-      }
-    }));
-
-    // Removes openFile if dialog is closed
-    ui.showDialog(new OpenDialog(this).container, 320, 220, true, true, function () {
-      window.openFile = null;
-    });
-  }).isEnabled = isGraphEnabled;
+     ui.openFile();
+  });
   this.addAction('save', function () {
     saveFile(ui, false);
   }, null, null, 'Ctrl+S').isEnabled = isGraphEnabled;
