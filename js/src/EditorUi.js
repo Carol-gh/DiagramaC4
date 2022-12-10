@@ -2351,7 +2351,7 @@ EditorUi.prototype.createSidebarFooterContainer = function () {
 EditorUi.prototype.createUi = function () {
   // Creates menubar
   //
-  this.menubar = (this.editor.chromeless) ? null : this.menus.createMenubar(this.createDiv('geMenubar'));
+ // this.menubar = (this.editor.chromeless) ? null : this.menus.createMenubar(this.createDiv('geMenubar'));
 
   if (this.menubar != null) {
     this.menubarContainer.appendChild(this.menubar.container);

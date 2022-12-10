@@ -16,7 +16,7 @@ window.addEventListener('load', () => {
 var editorUiInit = EditorUi.prototype.init;
 
 EditorUi.prototype.init = function () {
-
+   
   editorUiInit.apply(this, arguments);
   this.actions.get('export').setEnabled(true);
 
@@ -110,6 +110,7 @@ var bundle = mxResources.getDefaultBundle(RESOURCE_BASE, mxLanguage) ||
 
 // Fixes possible asynchronous requests
 mxUtils.getAll([bundle, STYLE_PATH + '/default.xml'], function (xhr) {
+  
   // Adds bundle text to resources
   mxResources.parse(xhr[0].getText());
 
@@ -120,16 +121,52 @@ mxUtils.getAll([bundle, STYLE_PATH + '/default.xml'], function (xhr) {
   // Main
   new EditorUi(new Editor(urlParams.chrome == '0', themes));
   //console.log(EditorUi.prototype.sidebarContainer);
-  //var users = document.createElement('a');
+ 
+  const button = document.createElement('div'); 
+  button.type = 'button';
+  button.style.cssText= 'background-color:DeepSkyBlue;border-color:red;' +'color:white;padding:6px 6px 6px 6px !important;margin:4px 8px 4px 8px;' +
+  'text-align:center;cursor:default !important';
+  button.innerText = 'Guardar'; 
+  document.body.appendChild(button).onclick=guardar;
+  EditorUi.prototype.sidebarContainer.appendChild(button);
+//window.onload=function(){
+ // document.getElementById('guardar').onclick=guardar;
+//}
+ function guardar() {
+
+    var answer = window.confirm('Estas seguro en guardar el diagrama?');
+    if (answer) {
+      //console.log('emitir el evento guardar');
+      socket.emit('save_component', { room });
+    }
+    
+  }
+
+  const cerrar = document.createElement('div'); 
+  cerrar.type = 'button'; 
+  cerrar.style.cssText= 'background-color:DeepSkyBlue;border-color:red;' +'color:white;padding:6px 6px 6px 6px !important;margin:4px 8px 4px 8px;' +
+  'text-align:center;cursor:default !important';
+  cerrar.innerText = 'Cerrar'; 
+  document.body.appendChild(cerrar).onclick=backe;
+  EditorUi.prototype.sidebarContainer.appendChild(cerrar);
+  function backe() {
+
+    var answer = window.history.back();
+    if (answer) {
+      
+     socket.emit('save_component', { room });
+    }
+    
+  }
+
+  var users = document.createElement('a');
   users.className = 'geTitle';
   users.style = 'padding-left:7%'
   users.innerText = 'Usuarios Conectados';
-  //EditorUi.prototype.sidebarContainer.appendChild(users);
-  
+  EditorUi.prototype.sidebarContainer.appendChild(users);
 }, function () {
   document.body.innerHTML = '<center style="margin-top:10%;">Error loading resource files. Please check browser console.</center>';
 });
-
 
 
 
@@ -148,7 +185,7 @@ socket.on('connect', () => {
      }
   });
 
-  /* socket.on('load_room_title', (data) => {
+  socket.on('load_room_title', (data) => {
         var title = document.createElement('a');
         title.className = 'geTitle';
         title.innerHTML = '<center style="margin-right:10%;"><strong>'+ data.title.trim().toUpperCase()+'</strong> </center>';
@@ -182,7 +219,7 @@ socket.on('connect', () => {
      
      
   }); 
-*/
+
   socket.on('error_server', () => {
 
     EditorUi.prototype.footerContainer.innerHTML =  '<strong>AVISO: Error al traer datos del Servidor. MODO SOLITARIO</strong>'; 
